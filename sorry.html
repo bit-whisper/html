@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcf5f2;
+            overflow: hidden; /* Prevent scrolling on main body */
+        }
+        
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .step-transition {
+            animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .slide-right-transition {
+            animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Heart Animation Background */
+        .heart-bg {
+            position: absolute;
+            color: #fbcfe8; /* pink-200 */
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Interactive List Styles */
+        .list-item {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .list-item.revealed {
+            height: 6rem; /* h-24 */
+            cursor: default;
+        }
+        .list-item.hidden-state {
+            height: 4rem; /* h-16 */
+            cursor: pointer;
+        }
+        .list-item.hidden-state:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex items-center justify-center text-gray-800">
+
+    <!-- Dynamic Background Gradients -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Floating Hearts Container -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Main Card Container -->
+    <div id="app-container" class="relative z-10 w-full max-w-sm p-4">
+        
+        <!-- STEP 0: INTRO -->
+        <div id="step-0" class="step-transition bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl text-center border border-white/50">
+            <div class="bg-gradient-to-b from-pink-100 to-white rounded-2xl p-6 mb-6 relative overflow-hidden">
+                <i data-lucide="sparkles" class="absolute top-2 left-2 text-pink-400 w-4 h-4"></i>
+                <i data-lucide="heart" class="absolute top-4 right-4 text-pink-300 w-3 h-3 fill-current"></i>
+                <div class="h-32 flex items-center justify-center">
+                    <!-- IMAGE 1 -->
+                    <img src="Hearts Love Sticker - Hearts Love Mochi Mochi - Descubre y comparte GIF.gif" alt="Cute Bunny" class="h-full object-contain drop-shadow-md">
+                </div>
+            </div>
+            <h1 class="text-3xl font-cursive text-gray-800 mb-3">Hey Cutiepie</h1>
+            <p class="text-gray-600 mb-8 text-sm leading-relaxed">
+                Can we talk for a moment? There's something important I want to tell you.
+            </p>
+            <button onclick="nextStep(1)" class="bg-pink-300 hover:bg-pink-400 text-white font-medium py-3 px-8 rounded-full shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                Continue <i data-lucide="heart" class="w-4 h-4 fill-current"></i>
+            </button>
+        </div>
+
+        <!-- STEP 1: SADNESS -->
+        <div id="step-1" class="hidden slide-right-transition bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl text-center border border-white/50">
+            <div class="bg-gradient-to-b from-purple-100 to-white rounded-2xl p-8 mb-6 shadow-inner">
+                <div class="h-32 flex items-center justify-center">
+                    <!-- IMAGE 2 -->
+                    <img src="download.gif" alt="Sad Cat" class="h-full object-contain">
+                </div>
+            </div>
+            <p class="text-gray-700 font-medium mb-8 leading-relaxed">
+                I know I hurt you... and I've been feeling really bad about it.
+            </p>
+            <button onclick="nextStep(2)" class="bg-purple-300 hover:bg-purple-400 text-white font-medium py-3 px-8 rounded-full shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- STEP 2: INTERACTIVE LIST -->
+        <div id="step-2" class="hidden step-transition bg-white/80 backdrop-blur-sm p-6 rounded-3xl shadow-xl border border-white/50">
+            <h2 class="text-center text-xl font-cursive mb-1 text-gray-800">Little things I want to tell you...</h2>
+            <p class="text-center text-xs text-gray-400 mb-6 uppercase tracking-wider">Tap each one</p>
+
+            <div class="space-y-4 mb-8">
+                <!-- Item 1 -->
+                <div onclick="revealItem(0)" id="item-0" class="list-item hidden-state relative overflow-hidden rounded-2xl bg-orange-100 shadow-sm">
+                    <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-100 cover-content">
+                        <i data-lucide="heart" class="text-white drop-shadow-sm w-6 h-6 fill-current"></i>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center p-4 text-center transition-opacity duration-500 opacity-0 text-content">
+                        <p class="text-sm font-medium text-gray-700">I messed up... and I'm really sorry for that.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div onclick="revealItem(1)" id="item-1" class="list-item hidden-state relative overflow-hidden rounded-2xl bg-pink-100 shadow-sm">
+                    <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-100 cover-content">
+                        <i data-lucide="heart" class="text-white drop-shadow-sm w-6 h-6 fill-current"></i>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center p-4 text-center transition-opacity duration-500 opacity-0 text-content">
+                        <p class="text-sm font-medium text-gray-700">I promise I'll be better for you.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div onclick="revealItem(2)" id="item-2" class="list-item hidden-state relative overflow-hidden rounded-2xl bg-purple-100 shadow-sm">
+                    <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-100 cover-content">
+                        <i data-lucide="heart" class="text-white drop-shadow-sm w-6 h-6 fill-current"></i>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center p-4 text-center transition-opacity duration-500 opacity-0 text-content">
+                        <p class="text-sm font-medium text-gray-700">Please forgive me... You mean so much to me.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="final-step-btn" onclick="nextStep(3)" disabled class="w-full py-3 rounded-full font-medium shadow-md transition-all duration-300 flex items-center justify-center gap-2 bg-gray-200 text-gray-400 cursor-not-allowed">
+                My message <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <!-- STEP 3: FINAL PROPOSAL -->
+        <div id="step-3" class="hidden step-transition bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-xl text-center border border-white/50">
+            <h2 class="text-2xl font-cursive mb-6 text-gray-800">From my heart...</h2>
+
+            <div class="flex justify-center gap-4 mb-8">
+                <div class="w-24 h-24 bg-purple-100 rounded-2xl flex items-center justify-center overflow-hidden shadow-inner">
+                    <!-- Cat Image 1 -->
+                    <img src="Mochi Mochi Peach Cute Cat Sticker - Mochi Mochi Peach Cute Cat Kitty - Discover & Share GIFs.gif" class="w-20" alt="Cat 1">
+                </div>
+                <div class="w-24 h-24 bg-pink-100 rounded-2xl flex items-center justify-center overflow-hidden shadow-inner">
+                    <!-- Cat Image 2 -->
+                    <img src="soorrrrryyyy.gif" class="w-20" alt="Cat 2">
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mb-2 uppercase tracking-wide">↓ Tap to see message ↓</p>
+            
+            <button onclick="openModal()" class="w-full bg-white border-2 border-pink-100 py-6 rounded-2xl shadow-lg group relative overflow-hidden transition-transform transform active:scale-95 hover:scale-105">
+                <div class="absolute inset-0 bg-pink-50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <h3 class="relative z-10 text-3xl font-cursive text-gray-700">I'm Sorry</h3>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL (The Sliding Letter) -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/20 z-40 hidden transition-opacity duration-300 opacity-0" onclick="closeModal()"></div>
+    
+    <div id="modal-content" class="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none translate-y-full transition-transform duration-500 ease-out">
+        <div class="bg-[#fff0f3] w-full max-w-md h-[85vh] sm:h-auto sm:max-h-[90vh] rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-y-auto pointer-events-auto relative">
+            
+            <!-- Decorative Corners -->
+            <div class="absolute top-0 left-0 w-32 h-32 bg-pink-200 rounded-br-full opacity-20"></div>
+            <div class="absolute bottom-0 right-0 w-32 h-32 bg-purple-200 rounded-tl-full opacity-20"></div>
+
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 p-2 bg-white/50 rounded-full hover:bg-white transition-colors">
+                <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+            </button>
+
+            <div class="p-8 sm:p-10 flex flex-col items-center">
+                <h2 class="text-4xl font-cursive text-gray-800 mb-6 drop-shadow-sm">I'm Sorry</h2>
+
+                <!-- Main Letter Text -->
+                <div class="text-gray-600 text-sm sm:text-base leading-relaxed text-justify mb-8 space-y-4">
+                    <p>
+                        Hey Babe i want to say something... I'm really sorry for behaving like this ... like m jitna bhi sorry bol lu it can't be same...
+                        Babe u r my life .... i love you like hell.. and can't even spend a day without you... please maaf kr do ..
+                    </p>
+
+                    <p class="font-semibold text-center text-gray-800">
+                        BABE YRR I M SORRY NA AB PLEASE MAAN BHI JAO.... I MISS U MY SWEETHEART 
+                    </p>
+                </div>
+
+                <!-- Media Gallery -->
+                <div class="w-full space-y-4">
+                    <h3 class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Our Memories</h3>
+                    
+                    <!-- Horizontal Image -->
+                    <div class="bg-white p-2 rounded-xl shadow-sm rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <!-- REPLACE IMAGE URL BELOW -->
+                        <img src="IMG_20250207_001553_611.jpg" alt="Memory" class="w-full h-40 object-cover rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- BACKGROUND HEARTS ---
+        const heartsContainer = document.getElementById('hearts-container');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.random() * 20 + 10}" height="${Math.random() * 20 + 10}" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 10 + 10 + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            
+            heartsContainer.appendChild(heart);
+
+            // Clean up heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+        setInterval(createHeart, 2000); // Create a heart every 2 seconds
+
+        // --- STEP NAVIGATION ---
+        let revealedCount = 0;
+
+        function nextStep(stepNumber) {
+            // Hide all steps
+            for (let i = 0; i < 4; i++) {
+                const el = document.getElementById(`step-${i}`);
+                if (el) el.classList.add('hidden');
+            }
+            
+            // Show requested step
+            const target = document.getElementById(`step-${stepNumber}`);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+        }
+
+        // --- INTERACTIVE LIST ---
+        function revealItem(index) {
+            const item = document.getElementById(`item-${index}`);
+            if (item.classList.contains('revealed')) return; // Already clicked
+
+            // Update classes for animation
+            item.classList.remove('hidden-state');
+            item.classList.add('revealed');
+            
+            // Fade out cover, fade in text
+            item.querySelector('.cover-content').style.opacity = '0';
+            setTimeout(() => {
+                item.querySelector('.text-content').style.opacity = '1';
+            }, 200);
+
+            // Track progress
+            revealedCount++;
+            if (revealedCount === 3) {
+                const btn = document.getElementById('final-step-btn');
+                btn.disabled = false;
+                btn.classList.remove('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
+                btn.classList.add('bg-red-300', 'hover:bg-red-400', 'text-white', 'transform', 'active:scale-95', 'cursor-pointer');
+            }
+        }
+
+        // --- MODAL LOGIC ---
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal() {
+            modalBackdrop.classList.remove('hidden');
+            // Small delay to allow display:block to apply before changing opacity
+            setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.add('translate-y-full');
+            
+            setTimeout(() => {
+                modalBackdrop.classList.add('hidden');
+            }, 300); // Wait for transition to finish
+        }
+    </script>
+</body>
+</html>
